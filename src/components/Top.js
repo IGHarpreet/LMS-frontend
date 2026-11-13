@@ -436,12 +436,12 @@ const Top = ({ collapsed, onToggle, onLogout }) => {
     { key: "hub", icon: <NotificationOutlined />, label: "News & Events", onClick: () => navigate(PATHS.hub) },
     { type: "divider" },
     { key: "password", icon: <LockOutlined />, label: "Change password", onClick: () => navigate("/changepassword") },
-    {
-      key: "theme",
-      icon: theme === "dark" ? <BulbFilled /> : <BulbOutlined />,
-      label: theme === "dark" ? "Switch to Light Mode" : "Enable Dark Mode",
-      onClick: () => setTheme((t) => (t === "dark" ? "light" : "dark")),
-    },
+    // {
+    //   key: "theme",
+    //   icon: theme === "dark" ? <BulbFilled /> : <BulbOutlined />,
+    //   label: theme === "dark" ? "Switch to Light Mode" : "Enable Dark Mode",
+    //   onClick: () => setTheme((t) => (t === "dark" ? "light" : "dark")),
+    // },
     { type: "divider" },
     {
       key: "logout",
