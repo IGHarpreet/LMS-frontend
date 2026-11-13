@@ -69,6 +69,9 @@ const Dashboard = () => {
   const [searchText, setSearchText] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
 const [selectedHolidayDate, setSelectedHolidayDate] = useState(moment());
+
+
+
   // Fetch today's attendance for admin / HR
   const fetchTodayAttendance = useCallback(async () => {
     if (isEmployee) return;

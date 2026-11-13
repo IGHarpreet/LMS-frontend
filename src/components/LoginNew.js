@@ -30,7 +30,7 @@ const friendly = (err) => {
 const LoginNew = ({ onLogin }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-
+console.log("BackendURL:", process.env.REACT_APP_BASE_URL);
   const onFinish = async ({ name, password }) => {
     setError("");
     setLoading(true);
