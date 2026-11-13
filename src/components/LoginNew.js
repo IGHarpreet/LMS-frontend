@@ -88,11 +88,11 @@ const LoginNew = ({ onLogin }) => {
             </div>
 
             {/* <div className="hrms-brand-text">
-              <strong>SBS Bela</strong>
+              <strong>LMS Pvt. Ltd.</strong>
             </div> */}
           </div>
           <div className="hrms-login-heading">
-            <h1>SBS Bela</h1>
+            <h1>LMS Pvt. Ltd.</h1>
             {/* <p>Sign in to continue to your workspace</p> */}
           </div>
 
@@ -182,7 +182,7 @@ const LoginNew = ({ onLogin }) => {
         </div>
 
         <div className="hrms-login-footer">
-          © {new Date().getFullYear()} SBS Bela. All rights reserved.
+          © {new Date().getFullYear()} LMS Pvt. Ltd.. All rights reserved.
         </div>
 
       </div>

@@ -40,7 +40,7 @@ useEffect(() => {
               <Routing />
             </ErrorBoundary>
           </Content>
-          <div className="ebs-footer">© {new Date().getFullYear()} SBS Bela · Employee Management System</div>
+          <div className="ebs-footer">© {new Date().getFullYear()} LMS Pvt. Ltd. · Employee Management System</div>
         </Layout>
       </Layout>
     </Layout>

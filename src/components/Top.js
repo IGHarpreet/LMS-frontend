@@ -467,7 +467,7 @@ const Top = ({ collapsed, onToggle, onLogout }) => {
           </button>
           <Link to="/dashboard" className="ebs-brand">
             <span className="ebs-brand-mark">S</span>
-            <span>SBS<em> Bela</em></span>
+            <span>LMS<em> Pvt. Ltd.</em></span>
           </Link>
         </div>
 
