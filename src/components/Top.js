@@ -73,14 +73,32 @@ const Top = ({ collapsed, onToggle, onLogout }) => {
   const [passwordOpen, setPasswordOpen] = useState(false);
   const [changingPassword, setChangingPassword] = useState(false);
   const [theme, setTheme] = useState(() => getStoredTheme());
-
+  const [companyLogo, setCompanyLogo] = useState("");
   const role = String(session.role || "employee").toLowerCase();
   const isManager = MANAGER.includes(role);
+const [companyName, setCompanyName] = useState("");
 
   const authHeaders = useCallback(() => {
     const t = cleanToken();
     return t ? { Authorization: `Bearer ${t}` } : {};
   }, []);
+
+  /* company logo (from the Company profile) */
+  const loadCompanyLogo = useCallback(async () => {
+    if (!session._id) return;
+    try {
+      const res = await axios.get(`${BASE_URL}/company-profile`, { headers: authHeaders() });
+      const overview = res.data?.profile?.overview || {};
+      setCompanyLogo(overview.logo || "");
+      setCompanyName(overview.name || "");
+    } catch (e) { /* keep the "S" fallback */ }
+  }, [session._id, authHeaders]);
+
+  useEffect(() => { loadCompanyLogo(); }, [loadCompanyLogo]);
+  useEffect(() => {
+    window.addEventListener("company-profile-updated", loadCompanyLogo);
+    return () => window.removeEventListener("company-profile-updated", loadCompanyLogo);
+  }, [loadCompanyLogo]);
 
   /* session from token */
   useEffect(() => {
@@ -466,8 +484,16 @@ const Top = ({ collapsed, onToggle, onLogout }) => {
             {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
           </button>
           <Link to="/dashboard" className="ebs-brand">
-            <span className="ebs-brand-mark">S</span>
-            <span>LMS<em> Pvt. Ltd.</em></span>
+            {companyLogo ? (
+              <img
+                src={getImageUrl(companyLogo)}
+                alt="Company logo"
+                style={{ maxWidth: 120, objectFit: "contain" }}
+              />
+            ) : (
+              <span className="ebs-brand-mark">S</span>
+            )}
+            <span>{companyName || "Company Name"}</span>
           </Link>
         </div>
 

@@ -10,23 +10,62 @@ import ErrorBoundary from "../components/ErrorBoundary";
 import lightVars from "../components/light.json";
 import { isLoggedIn } from "../utils/auth";
 import { applyThemeToDocument, DEFAULT_THEME } from "../utils/theme";
+import jwt_decode from "../utils/jwtSafe";
+import { useCallback } from "react";
+import axios from "axios";
+import { BASE_URL } from "./api";
 
 const { Content } = Layout;
 
 const Shell = () => {
   const { pathname } = useLocation();
   const [collapsed, setCollapsed] = useState(window.innerWidth < 992);
-useEffect(() => {
-  const handleResize = () => {
-    setCollapsed(window.innerWidth < 992);
-  };
+  const [companyName, setCompanyName] = useState("");
+  const [session, setSession] = useState({ _id: "", name: "", role: "employee" });
+const cleanToken = () =>
+  (localStorage.getItem("access_token1") || "").replace(/^["']|["']$/g, "");
 
-  window.addEventListener("resize", handleResize);
+  const authHeaders = useCallback(() => {
+    const t = cleanToken();
+    return t ? { Authorization: `Bearer ${t}` } : {};
+  }, []);
 
-  return () => {
-    window.removeEventListener("resize", handleResize);
-  };
-}, []);
+  /* company logo (from the Company profile) */
+  const loadCompanyLogo = useCallback(async () => {
+    if (!session._id) return;
+    try {
+      const res = await axios.get(`${BASE_URL}/company-profile`, { headers: authHeaders() });
+      const overview = res.data?.profile?.overview || {};
+      setCompanyName(overview.name || "");
+    } catch (e) { /* keep the "S" fallback */ }
+  }, [session._id, authHeaders]);
+
+  useEffect(() => { loadCompanyLogo(); }, [loadCompanyLogo]);
+  useEffect(() => {
+    window.addEventListener("company-profile-updated", loadCompanyLogo);
+    return () => window.removeEventListener("company-profile-updated", loadCompanyLogo);
+  }, [loadCompanyLogo]);
+  useEffect(() => {
+    try {
+      const token = cleanToken();
+      if (!token) return;
+      const d = jwt_decode(token);
+      setSession({ _id: d?._id || "", name: d?.name || "", role: String(d?.role || "employee").toLowerCase() });
+    } catch (e) { /* pages handle auth */ }
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setCollapsed(window.innerWidth < 992);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
     <Layout className="ebs-app">
       <Top collapsed={collapsed} onToggle={() => setCollapsed((c) => !c)} />
@@ -40,7 +79,7 @@ useEffect(() => {
               <Routing />
             </ErrorBoundary>
           </Content>
-          <div className="ebs-footer">© {new Date().getFullYear()} LMS Pvt. Ltd. · Employee Management System</div>
+          <div className="ebs-footer">© {new Date().getFullYear()} {companyName || "Company Name"}</div>
         </Layout>
       </Layout>
     </Layout>

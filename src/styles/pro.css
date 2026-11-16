@@ -1,5 +1,5 @@
 /* =====================================================================
-   LMS Pvt. Ltd. HRMS – design system
+    HRMS – design system
    Loaded AFTER antd.css and App.css.
    Everything is scoped under .ebs-app / .ebs-login so it also wins over
    the less.js runtime theme that is injected later in <head>.

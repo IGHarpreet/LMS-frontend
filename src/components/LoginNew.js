@@ -9,8 +9,11 @@ import {
   BankOutlined,
 } from "@ant-design/icons";
 import axios from "axios";
-import { getErrorMessage } from "../shared/api";
+import { BASE_URL, getErrorMessage } from "../shared/api";
 import "./LoginNew.css";
+import { useEffect } from "react";
+import { useCallback } from "react";
+import jwt_decode from "../utils/jwtSafe";
 
 const friendly = (err) => {
   const status = err?.response?.status;
@@ -30,7 +33,40 @@ const friendly = (err) => {
 const LoginNew = ({ onLogin }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-console.log("BackendURL:", process.env.REACT_APP_BASE_URL);
+
+  const [companyName, setCompanyName] = useState("");
+  const [session, setSession] = useState({ _id: "", name: "", role: "employee" });
+  const cleanToken = () =>
+    (localStorage.getItem("access_token1") || "").replace(/^["']|["']$/g, "");
+
+  const authHeaders = useCallback(() => {
+    const t = cleanToken();
+    return t ? { Authorization: `Bearer ${t}` } : {};
+  }, []);
+
+  /* company logo (from the Company profile) */
+  const loadCompanyLogo = useCallback(async () => {
+    if (!session._id) return;
+    try {
+      const res = await axios.get(`${BASE_URL}/company-profile`, { headers: authHeaders() });
+      const overview = res.data?.profile?.overview || {};
+      setCompanyName(overview.name || "");
+    } catch (e) { /* keep the "S" fallback */ }
+  }, [session._id, authHeaders]);
+
+  useEffect(() => { loadCompanyLogo(); }, [loadCompanyLogo]);
+  useEffect(() => {
+    window.addEventListener("company-profile-updated", loadCompanyLogo);
+    return () => window.removeEventListener("company-profile-updated", loadCompanyLogo);
+  }, [loadCompanyLogo]);
+    useEffect(() => {
+      try {
+        const token = cleanToken();
+        if (!token) return;
+        const d = jwt_decode(token);
+        setSession({ _id: d?._id || "", name: d?.name || "", role: String(d?.role || "employee").toLowerCase() });
+      } catch (e) { /* pages handle auth */ }
+    }, []);
   const onFinish = async ({ name, password }) => {
     setError("");
     setLoading(true);
@@ -87,12 +123,11 @@ console.log("BackendURL:", process.env.REACT_APP_BASE_URL);
               <BankOutlined />
             </div>
 
-            {/* <div className="hrms-brand-text">
-              <strong>LMS Pvt. Ltd.</strong>
-            </div> */}
+
           </div>
           <div className="hrms-login-heading">
-            <h1>LMS Pvt. Ltd.</h1>
+            <h1>{companyName || "Company Name"}</h1>
+
             {/* <p>Sign in to continue to your workspace</p> */}
           </div>
 
@@ -182,7 +217,7 @@ console.log("BackendURL:", process.env.REACT_APP_BASE_URL);
         </div>
 
         <div className="hrms-login-footer">
-          © {new Date().getFullYear()} LMS Pvt. Ltd.. All rights reserved.
+          © {new Date().getFullYear()} {companyName || "Company Name"} All rights reserved.
         </div>
 
       </div>
