@@ -7,6 +7,7 @@ import {
   TeamOutlined,
   CalendarOutlined,
   NotificationOutlined,
+  BankOutlined,
 } from "@ant-design/icons";
 import { getUser } from "../utils/auth";
 
@@ -38,6 +39,11 @@ const adminItems = [
     icon: <NotificationOutlined />,
     label: "News & Events",
   },
+   {
+    key: "/company",
+    icon: <BankOutlined />,
+    label: "Company",
+  },
   // { key: "/adminhandleskill", icon: <TrophyOutlined />, label: "Skills" },
   // { key: "/projects", icon: <FolderOpenOutlined />, label: "Projects" },
 ];
@@ -62,6 +68,11 @@ const employeeItems = [
     key: "/announcements",
     icon: <NotificationOutlined />,
     label: "News & Events",
+  },
+   {
+    key: "/company",
+    icon: <BankOutlined />,
+    label: "Company",
   },
   // { key: "/employeeskill", icon: <TrophyOutlined />, label: "Skills" },
   // { key: "/projects", icon: <FolderOpenOutlined />, label: "Projects" },

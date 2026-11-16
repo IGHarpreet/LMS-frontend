@@ -17,6 +17,7 @@ import MyProfile from "./MyProfile";
 import Adminhandleskill from "./adminhandleskill";
 import EmployeeSkill from "./employeeskill";
 import Announcements from "./Announcements";
+import CompanyProfile from "./company/CompanyProfile";
 
 const Routing = () => {
   return (
@@ -39,7 +40,7 @@ const Routing = () => {
         <Route path="/changepassword" element={<ChangePassword />} />
         <Route path="/documentation/:id" element={<Documentation />} />
         <Route path="/announcements" element={<Announcements />} />
-
+        <Route path="/company" element={<CompanyProfile />} />
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>
     </>

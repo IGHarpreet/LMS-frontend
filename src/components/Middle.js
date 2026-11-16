@@ -16,6 +16,7 @@ const LABELS = {
   profile: "Profile",
   changepassword: "Change password",
   documentation: "Documents",
+  company: "Company profile",
   edit: "Edit",
   view: "View",
 };

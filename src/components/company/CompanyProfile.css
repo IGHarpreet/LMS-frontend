@@ -1,0 +1,731 @@
+/* =====================================================================
+   Company profile module
+   Uses the app's --ebs-* tokens (light + dark). All classes are cp-*
+   prefixed so nothing here can leak into existing pages.
+   ===================================================================== */
+
+.company-profile {
+  color: var(--ebs-text);
+  max-width: 1180px;
+}
+
+.cp-loading {
+  display: flex;
+  justify-content: center;
+  padding: 64px 0;
+}
+.cp-draft-note,
+.cp-preview-note {
+  margin-bottom: 16px;
+}
+
+/* ------------------------------------------------------------- cards */
+.cp-card {
+  background: var(--ebs-surface);
+  border: 1px solid var(--ebs-border);
+  border-radius: var(--ebs-radius);
+  box-shadow: var(--ebs-shadow);
+  padding: 20px 22px;
+  min-width: 0;
+}
+.cp-card-title {
+  margin: 0 0 10px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ebs-ink);
+}
+.cp-card-accent {
+  border-left: 3px solid var(--ebs-brand);
+}
+.cp-text {
+  margin: 0;
+  white-space: pre-line;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+.cp-subhead {
+  margin: 26px 0 12px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ebs-ink);
+}
+
+.cp-grid {
+  display: grid;
+  gap: 16px;
+}
+.cp-grid + .cp-grid,
+.cp-grid + .cp-subhead {
+  margin-top: 16px;
+}
+.cp-grid-overview {
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  align-items: start;
+}
+.cp-grid-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.cp-grid-3 {
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+
+/* -------------------------------------------------------------- hero */
+.cp-hero {
+  background: var(--ebs-surface);
+  border: 1px solid var(--ebs-border);
+  border-radius: var(--ebs-radius);
+  box-shadow: var(--ebs-shadow);
+  overflow: hidden;
+}
+.cp-cover {
+  height: 200px;
+  background: var(--ebs-sider);
+  position: relative;
+}
+.cp-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.cp-cover-fallback {
+  position: absolute;
+  inset: 0;
+}
+.cp-cover-fallback::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 4px;
+  background: var(--ebs-brand);
+}
+.cp-hero-body {
+  display: flex;
+  align-items: flex-end;
+  gap: 20px;
+  padding: 0 24px 22px;
+}
+.cp-logo {
+  flex: none;
+  width: 96px;
+  height: 96px;
+  margin-top: -48px;
+  border-radius: 16px;
+  background: var(--ebs-surface);
+  border: 4px solid var(--ebs-surface);
+  box-shadow: 0 0 0 1px var(--ebs-border), var(--ebs-shadow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  font-size: 36px;
+  color: var(--ebs-brand);
+}
+.cp-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #fff;
+}
+.cp-hero-text {
+  min-width: 0;
+  padding-top: 14px;
+}
+.cp-hero-text h2 {
+  margin: 0;
+  font-size: 26px;
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ebs-ink);
+  overflow-wrap: anywhere;
+}
+.cp-tagline {
+  margin: 4px 0 0;
+  font-size: 15px;
+  color: var(--ebs-muted);
+}
+.cp-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 0;
+  margin-top: 12px;
+}
+.cp-chips:empty {
+  display: none;
+}
+
+/* ------------------------------------------------------- section nav */
+.cp-nav {
+  position: sticky;
+  top: calc(var(--ebs-header-h) + 8px);
+  z-index: 20;
+  display: flex;
+  gap: 4px;
+  margin: 16px 0 0;
+  padding: 6px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  background: var(--ebs-surface);
+  border: 1px solid var(--ebs-border);
+  border-radius: var(--ebs-radius);
+  box-shadow: var(--ebs-shadow);
+}
+.cp-nav-item {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 36px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: var(--ebs-radius-sm);
+  background: transparent;
+  color: var(--ebs-muted);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s;
+}
+.cp-nav-item:hover {
+  background: var(--ebs-surface-2);
+  color: var(--ebs-ink);
+}
+.cp-nav-item.is-active {
+  background: var(--ebs-brand-soft);
+  color: var(--ebs-brand);
+}
+
+/* ---------------------------------------------------------- sections */
+.cp-section {
+  margin-top: 30px;
+  scroll-margin-top: calc(var(--ebs-header-h) + 76px);
+}
+.cp-section-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.cp-section-icon {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ebs-brand-soft);
+  color: var(--ebs-brand);
+  font-size: 16px;
+}
+.cp-section-title {
+  flex: 1;
+  min-width: 0;
+}
+.cp-section-title h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--ebs-ink);
+}
+.cp-section-title p {
+  margin: 2px 0 0;
+  font-size: 13px;
+  color: var(--ebs-muted);
+}
+
+.cp-empty {
+  background: var(--ebs-surface);
+  border: 1px dashed var(--ebs-border);
+  border-radius: var(--ebs-radius);
+  padding: 28px 16px;
+  text-align: center;
+  color: var(--ebs-muted);
+}
+.cp-empty-page {
+  padding: 56px 16px;
+  border-style: solid;
+}
+.cp-empty-icon {
+  font-size: 44px;
+  color: var(--ebs-muted);
+}
+
+/* ------------------------------------------------------------ facts */
+.cp-facts {
+  margin: 0;
+  display: grid;
+  gap: 14px;
+}
+.cp-fact {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  min-width: 0;
+}
+.cp-fact-icon {
+  flex: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ebs-surface-2);
+  border: 1px solid var(--ebs-border);
+  color: var(--ebs-muted);
+}
+.cp-fact dt {
+  font-size: 12px;
+  color: var(--ebs-muted);
+}
+.cp-fact dd {
+  margin: 0;
+  font-weight: 500;
+  color: var(--ebs-ink);
+  overflow-wrap: anywhere;
+}
+
+/* ----------------------------------------------- values / lists / tiles */
+.cp-value h5,
+.cp-leader h5,
+.cp-dept h5,
+.cp-tl-card h5 {
+  margin: 0 0 6px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ebs-ink);
+}
+.cp-checklist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 10px 20px;
+}
+.cp-checklist li {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  line-height: 1.55;
+}
+.cp-checklist .anticon {
+  margin-top: 4px;
+  color: var(--ebs-green);
+}
+.cp-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.cp-tile .anticon {
+  font-size: 20px;
+  color: var(--ebs-brand);
+  margin-bottom: 6px;
+}
+.cp-tile span {
+  font-size: 12px;
+  color: var(--ebs-muted);
+}
+.cp-tile strong {
+  font-size: 16px;
+  color: var(--ebs-ink);
+  overflow-wrap: anywhere;
+}
+
+/* --------------------------------------------------------- leadership */
+.cp-leader .cp-text {
+  margin-top: 10px;
+  font-size: 13px;
+}
+.cp-avatar {
+  width: 72px;
+  height: 72px;
+  margin-bottom: 12px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ebs-brand-soft);
+  color: var(--ebs-brand);
+  font-size: 22px;
+  font-weight: 700;
+}
+.cp-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.cp-role {
+  margin: 0 0 8px;
+  color: var(--ebs-muted);
+}
+
+/* -------------------------------------------------------- departments */
+.cp-dept-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  margin-bottom: 8px;
+  font-size: 13px;
+  color: var(--ebs-muted);
+}
+.cp-dept .cp-text {
+  font-size: 13px;
+}
+
+/* ----------------------------------------------------------- timeline */
+.cp-timeline {
+  --cp-yw: 76px;
+  --cp-gap: 22px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.cp-tl-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--cp-yw) minmax(0, 1fr);
+  column-gap: var(--cp-gap);
+  padding-bottom: 16px;
+}
+.cp-tl-item::before {
+  content: "";
+  position: absolute;
+  top: 8px;
+  bottom: -8px;
+  left: calc(var(--cp-yw) + var(--cp-gap) / 2 - 1px);
+  width: 2px;
+  background: var(--ebs-border);
+}
+.cp-tl-item:last-child::before {
+  display: none;
+}
+.cp-tl-item::after {
+  content: "";
+  position: absolute;
+  top: 4px;
+  left: calc(var(--cp-yw) + var(--cp-gap) / 2 - 7px);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--ebs-brand);
+  border: 3px solid var(--ebs-surface);
+  box-shadow: 0 0 0 1px var(--ebs-border);
+}
+.cp-tl-year {
+  text-align: right;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ebs-ink);
+  line-height: 22px;
+}
+.cp-tl-card {
+  background: var(--ebs-surface);
+  border: 1px solid var(--ebs-border);
+  border-radius: var(--ebs-radius);
+  box-shadow: var(--ebs-shadow);
+  padding: 14px 18px;
+  min-width: 0;
+}
+.cp-tl-card .ant-tag {
+  margin-bottom: 8px;
+}
+.cp-tl-card .cp-text {
+  font-size: 13px;
+}
+
+/* ------------------------------------------------------------ gallery */
+.cp-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 14px;
+}
+.cp-gallery figure {
+  margin: 0;
+}
+.cp-gallery .ant-image {
+  display: block;
+  width: 100%;
+}
+.cp-gallery .ant-image img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid var(--ebs-border);
+}
+.cp-gallery figcaption {
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--ebs-muted);
+}
+.cp-updated {
+  margin: 28px 0 0;
+  text-align: right;
+  font-size: 12px;
+  color: var(--ebs-muted);
+}
+
+/* ====================================================== admin editor */
+.cp-actionbar {
+  position: sticky;
+  top: var(--ebs-header-h);
+  z-index: 30;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: 12px 16px;
+  background: var(--ebs-surface);
+  border: 1px solid var(--ebs-border);
+  border-radius: var(--ebs-radius);
+  box-shadow: var(--ebs-shadow);
+}
+.cp-actionbar-left {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 18px;
+  color: var(--ebs-ink);
+}
+.cp-publish {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--ebs-muted);
+  cursor: pointer;
+}
+.cp-edit-card {
+  margin-bottom: 16px;
+}
+.cp-edit-help {
+  margin: 0 0 14px;
+  color: var(--ebs-muted);
+  font-size: 13px;
+}
+.cp-form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 0 18px;
+}
+
+.cp-strlist {
+  display: grid;
+  gap: 8px;
+}
+.cp-strlist-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.cp-strlist-row > .ant-input {
+  flex: 1;
+}
+
+.cp-list {
+  display: grid;
+  gap: 10px;
+}
+.cp-list-empty {
+  padding: 6px 0;
+}
+.cp-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  background: var(--ebs-surface-2);
+  border: 1px solid var(--ebs-border);
+  border-radius: 10px;
+}
+.cp-list-item-main {
+  flex: 1;
+  min-width: 0;
+}
+.cp-list-item-actions {
+  flex: none;
+  display: flex;
+  align-items: center;
+}
+.cp-sum {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+.cp-sum-thumb {
+  flex: none;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ebs-brand-soft);
+  color: var(--ebs-brand);
+}
+.cp-sum-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.cp-sum-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.cp-sum-text strong {
+  color: var(--ebs-ink);
+  overflow-wrap: anywhere;
+}
+.cp-sum-text span {
+  font-size: 12px;
+  color: var(--ebs-muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* image upload field (also used inside modals, so not nested) */
+.cp-upload {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.cp-upload-box {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--ebs-surface-2);
+  border: 1px dashed var(--ebs-border);
+  color: var(--ebs-muted);
+  font-size: 22px;
+}
+.cp-upload-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.cp-upload-box.is-logo {
+  width: 88px;
+  height: 88px;
+  border-radius: 14px;
+}
+.cp-upload-box.is-logo img {
+  object-fit: contain;
+  background: #fff;
+}
+.cp-upload-box.is-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+}
+.cp-upload-box.is-cover {
+  width: 200px;
+  height: 64px;
+  border-radius: 10px;
+}
+.cp-upload-box.is-photo {
+  width: 120px;
+  height: 90px;
+  border-radius: 10px;
+}
+.cp-upload-side {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+.cp-upload-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.cp-upload-hint {
+  font-size: 12px;
+  color: var(--ebs-muted);
+}
+
+.cp-danger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  border-color: var(--ebs-brand);
+}
+.cp-danger p {
+  margin: 0;
+  color: var(--ebs-muted);
+}
+
+/* -------------------------------------------------------- responsive */
+@media (max-width: 900px) {
+  .cp-grid-overview {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 640px) {
+  .cp-grid-2 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .cp-cover {
+    height: 130px;
+  }
+  .cp-hero-body {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 0 16px 18px;
+  }
+  .cp-logo {
+    width: 80px;
+    height: 80px;
+    margin-top: -40px;
+  }
+  .cp-hero-text {
+    padding-top: 6px;
+  }
+  .cp-hero-text h2 {
+    font-size: 22px;
+  }
+  .cp-card {
+    padding: 16px;
+  }
+  .cp-timeline {
+    --cp-yw: 46px;
+    --cp-gap: 18px;
+  }
+  .cp-tl-year {
+    font-size: 14px;
+  }
+  .cp-checklist {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .cp-actionbar {
+    position: static;
+  }
+  .cp-upload-box.is-cover {
+    width: 100%;
+    max-width: 240px;
+  }
+}
